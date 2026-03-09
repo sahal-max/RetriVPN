@@ -1948,66 +1948,59 @@ async function sendMainMenu(ctx) {
   const latency = (Math.random() * 0.1 + 0.01).toFixed(2);
 
   const messageText = `
-<code>┏━━━━━━━━━━━━━━━━━━━━┓</code>
-<b>🚀 BOT VPN ${NAMA_STORE}</b>
-<code>┗━━━━━━━━━━━━━━━━━━━━┛</code>
+<b>🤖 BOT VPN ${NAMA_STORE}</b>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
 
-<code>┏━━━━━━━━━━━━━━━━━━━━┓</code>
-<b>👤 INFORMASI PENGGUNA</b>
-<code>┣━━━━━━━━━━━━━━━━━━━━┫</code>
-<code>Nama   : </code> ${userName}
-<code>ID     : </code> <code>${userId}</code>
-<code>Saldo  : </code> <code>Rp ${saldo}</code>
-<code>Status : </code> ${statusReseller}
-<code>┗━━━━━━━━━━━━━━━━━━━━┛</code>
+<b>👤 PROFIL PENGGUNA</b>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
+<b>Nama   :</b> <code>${escapeHtmlLocal(userName)}</code>
+<b>ID     :</b> <code>${userId}</code>
+<b>Saldo  :</b> <code>Rp ${saldo.toLocaleString('id-ID')}</code>
+<b>Status :</b> <code>${statusReseller}</code>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
 
-<code>┏━━━━━━━━━━━━━━━━━━━━┓</code>
-<b>📊 STATISTIK ANDA HARI INI</b>
-<code>┣━━━━━━━━━━━━━━━━━━━━┫</code>
-• 📅 <b>Hari Ini</b>   : ${userToday} akun
-• 📆 <b>Minggu Ini</b> : ${userWeek} akun  
-• 🗓️ <b>Bulan Ini</b>  : ${userMonth} akun
-<code>┗━━━━━━━━━━━━━━━━━━━━┛</code>
+<b>📊 STATISTIK AKUN ANDA</b>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
+<b>Hari Ini   :</b> <code>${userToday} akun</code>
+<b>Minggu Ini :</b> <code>${userWeek} akun</code>
+<b>Bulan Ini  :</b> <code>${userMonth} akun</code>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
 
-<code>┏━━━━━━━━━━━━━━━━━━━━┓</code>
 <b>🌍 STATISTIK GLOBAL</b>
-<code>┣━━━━━━━━━━━━━━━━━━━━┫</code>
-• 📅 <b>Hari Ini</b>   : ${globalToday} akun
-• 📆 <b>Minggu Ini</b> : ${globalWeek} akun
-• 🗓️ <b>Bulan Ini</b>  : ${globalMonth} akun
-<code>┗━━━━━━━━━━━━━━━━━━━━┛</code>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
+<b>Hari Ini   :</b> <code>${globalToday} akun</code>
+<b>Minggu Ini :</b> <code>${globalWeek} akun</code>
+<b>Bulan Ini  :</b> <code>${globalMonth} akun</code>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
 
-<code>┏━━━━━━━━━━━━━━━━━━━━┓</code>
-<b>📈 STATUS SISTEM</b>
-<code>┣━━━━━━━━━━━━━━━━━━━━┫</code>
-👥 <b>Users</b>    : ${jumlahPengguna}
-⏱️ <b>Latency</b>  : ${latency} ms
-👨‍💻 <b>Edited by</b> : 1FORCR
-<code>┗━━━━━━━━━━━━━━━━━━━━┛</code>
+<b>⚙️ STATUS SISTEM</b>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
+<b>Users   :</b> <code>${jumlahPengguna}</code>
+<b>Latency :</b> <code>${latency} ms</code>
+<b>Versi   :</b> <code>v2.0 Fixed</code>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
 `;
 
   // Buat keyboard dasar untuk semua user
   let keyboard = [
     [
-      { text: '➕ Buat Akun', callback_data: 'service_create' },
-      { text: '⌛ Trial Akun', callback_data: 'service_trial' }
+      { text: '🛒 Buat Akun', callback_data: 'service_create' },
+      { text: '🎁 Trial Gratis', callback_data: 'service_trial' }
     ],
     [
-      { text: '🗑️ Hapus Akun Saya', callback_data: 'delete_my_account_intro' },
-      { text: '📂 Lihat Akun Saya', callback_data: 'view_accounts' }
+      { text: '🔄 Perpanjang Akun', callback_data: 'service_renew' },
+      { text: '📋 Akun Saya', callback_data: 'view_accounts' }
     ],
     [
-      { text: '🧰 Tools', callback_data: 'menu_tools' },
+      { text: '🗑 Hapus Akun', callback_data: 'delete_my_account_intro' },
+      { text: '⏰ Cek Expired', callback_data: 'check_expiry_account' }
+    ],
+    [
+      { text: 'Tools & Utilitas', callback_data: 'menu_tools' },
       { text: '📞 Hubungi Admin', callback_data: 'hubungi_admin' }
     ],
     [
-      { text: '🔍 Cek Masa Aktif Akun Saya', callback_data: 'check_expiry_account' }
-    ],
-    [
-     // { text: '📘 Tutorial Penggunaan Bot', callback_data: 'tutorial_bot' }
-    ],
-    [
-      { text: '🤝 Jadi Reseller harga lebih murah!!', callback_data: 'jadi_reseller' }
+      { text: 'Daftar Reseller - Harga Lebih Hemat!', callback_data: 'jadi_reseller' }
     ],
   ];
 
@@ -2015,7 +2008,7 @@ async function sendMainMenu(ctx) {
     const topupIndex = keyboard.findIndex(row =>
       row.some(btn => btn.callback_data === 'topup_saldo')
     );
-    const autoRow = [{ text: '💰 TopUp Saldo Otomatis', callback_data: 'topup_saldo' }];
+    const autoRow = [{ text: '💳 TopUp Saldo Otomatis', callback_data: 'topup_saldo' }];
     if (topupIndex === -1) {
       keyboard.splice(4, 0, autoRow);
     }
@@ -2025,7 +2018,7 @@ async function sendMainMenu(ctx) {
     const topupIndex = keyboard.findIndex(row =>
       row.some(btn => btn.callback_data === 'topup_saldo')
     );
-    const manualRow = [{ text: '💰 TopUp Saldo Manual via (QRIS)', callback_data: 'topup_manual' }];
+    const manualRow = [{ text: 'TopUp Saldo Manual via (QRIS)', callback_data: 'topup_manual' }];
     if (topupIndex === -1) {
       keyboard.push(manualRow);
     } else {
@@ -2036,11 +2029,11 @@ async function sendMainMenu(ctx) {
   if (isReseller) {
     // Letakkan menu reseller tepat di bawah baris Tools + Hubungi Admin
     keyboard.splice(3, 0, [
-      { text: '🔐 Buka Kunci Akun', callback_data: 'service_unlock' },
-      { text: '🗝️ Kunci Akun', callback_data: 'service_lock' }
+      { text: 'Buka Kunci Akun', callback_data: 'service_unlock' },
+      { text: 'Kunci Akun', callback_data: 'service_lock' }
     ]);
     keyboard.splice(4, 0, [
-      { text: '📊 Statistik Saya', callback_data: 'reseller_stats' }
+      { text: 'Statistik Reseller Saya', callback_data: 'reseller_stats' }
     ]);
 
     logger.info('🛡️ Menu reseller ditampilkan untuk user: ' + userId);
@@ -2908,61 +2901,43 @@ async function handleServiceAction(ctx, action) {
   let keyboard;
   if (action === 'create') {
     keyboard = [
-      [{ text: 'Buat UDP ZIVPN', callback_data: 'create_zivpn' }],
-      [
-        { text: 'Buat Ssh/Ovpn', callback_data: 'create_ssh' },
-        { text: 'Buat UDP HC', callback_data: 'create_udp_http' }
-      ],
-      [{ text: 'Buat Vmess', callback_data: 'create_vmess' }, { text: 'Buat Vless', callback_data: 'create_vless' }],
-      [{ text: 'Buat Trojan', callback_data: 'create_trojan' }, { text: 'Kembali', callback_data: 'send_main_menu' }]
+      [{ text: '🌐 Buat SSH/OpenVPN', callback_data: 'create_ssh' }, { text: '🔗 Buat UDP HC', callback_data: 'create_udp_http' }],
+      [{ text: '🚀 Buat Vmess', callback_data: 'create_vmess' }, { text: '⚡ Buat Vless', callback_data: 'create_vless' }],
+      [{ text: '🛡️ Buat Trojan', callback_data: 'create_trojan' }, { text: '🌙 Buat UDP ZIVPN', callback_data: 'create_zivpn' }],
+      [{ text: '🔙 Kembali ke Menu', callback_data: 'send_main_menu' }]
     ];
   } else if (action === 'trial') {
     keyboard = [
-      [{ text: 'Trial UDP ZIVPN', callback_data: 'trial_zivpn' }],
-      [
-        { text: 'Trial Ssh/Ovpn', callback_data: 'trial_ssh' },
-        { text: 'Trial UDP HTTP', callback_data: 'trial_udp_http' }
-      ],
-      [{ text: 'Trial Vmess', callback_data: 'trial_vmess' }, { text: 'Trial Vless', callback_data: 'trial_vless' }],
-      [{ text: 'Trial Trojan', callback_data: 'trial_trojan' }, { text: 'Kembali', callback_data: 'send_main_menu' }]
+      [{ text: '🌐 Trial SSH/OpenVPN', callback_data: 'trial_ssh' }, { text: '🔗 Trial UDP HTTP', callback_data: 'trial_udp_http' }],
+      [{ text: '🚀 Trial Vmess', callback_data: 'trial_vmess' }, { text: '⚡ Trial Vless', callback_data: 'trial_vless' }],
+      [{ text: '🛡️ Trial Trojan', callback_data: 'trial_trojan' }, { text: '🌙 Trial UDP ZIVPN', callback_data: 'trial_zivpn' }],
+      [{ text: '🔙 Kembali ke Menu', callback_data: 'send_main_menu' }]
     ];
   } else if (action === 'renew') {
     keyboard = [
-      [{ text: 'Perpanjang UDP ZIVPN', callback_data: 'renew_zivpn' }],
-      [
-        { text: 'Perpanjang Ssh/Ovpn', callback_data: 'renew_ssh' },
-        { text: 'Perpanjang UDP HTTP', callback_data: 'renew_udp_http' }
-      ],
-      [{ text: 'Perpanjang Vmess', callback_data: 'renew_vmess' }, { text: 'Perpanjang Vless', callback_data: 'renew_vless' }],
-      [{ text: 'Perpanjang Trojan', callback_data: 'renew_trojan' }, { text: 'Kembali', callback_data: 'send_main_menu' }]
+      [{ text: '🌐 Perpanjang SSH/Ovpn', callback_data: 'renew_ssh' }, { text: '🔗 Perpanjang UDP HTTP', callback_data: 'renew_udp_http' }],
+      [{ text: '🚀 Perpanjang Vmess', callback_data: 'renew_vmess' }, { text: '⚡ Perpanjang Vless', callback_data: 'renew_vless' }],
+      [{ text: '🛡️ Perpanjang Trojan', callback_data: 'renew_trojan' }, { text: '🌙 Perpanjang ZIVPN', callback_data: 'renew_zivpn' }],
+      [{ text: '🔙 Kembali ke Menu', callback_data: 'send_main_menu' }]
     ];
   } else if (action === 'del') {
     keyboard = [
-      [
-        { text: 'Hapus Ssh/Ovpn', callback_data: 'del_ssh' },
-        { text: 'Hapus UDP HTTP', callback_data: 'del_udp_http' }
-      ],
-      [{ text: 'Hapus UDP ZIVPN', callback_data: 'del_zivpn' }],
-      [{ text: 'Hapus Vmess', callback_data: 'del_vmess' }, { text: 'Hapus Vless', callback_data: 'del_vless' }],
-      [{ text: 'Hapus Trojan', callback_data: 'del_trojan' }, { text: 'Kembali', callback_data: 'send_main_menu' }]
+      [{ text: '🌐 Hapus SSH/Ovpn', callback_data: 'del_ssh' }, { text: '🔗 Hapus UDP HTTP', callback_data: 'del_udp_http' }],
+      [{ text: '🚀 Hapus Vmess', callback_data: 'del_vmess' }, { text: '⚡ Hapus Vless', callback_data: 'del_vless' }],
+      [{ text: '🛡️ Hapus Trojan', callback_data: 'del_trojan' }, { text: '🌙 Hapus UDP ZIVPN', callback_data: 'del_zivpn' }],
+      [{ text: '🔙 Kembali ke Menu', callback_data: 'send_main_menu' }]
     ];
   } else if (action === 'lock') {
     keyboard = [
-      [
-        { text: 'Lock Ssh/Ovpn', callback_data: 'lock_ssh' },
-        { text: 'Lock UDP HTTP', callback_data: 'lock_udp_http' }
-      ],
-      [{ text: 'Lock Vmess', callback_data: 'lock_vmess' }, { text: 'Lock Vless', callback_data: 'lock_vless' }],
-      [{ text: 'Lock Trojan', callback_data: 'lock_trojan' }, { text: 'Kembali', callback_data: 'send_main_menu' }]
+      [{ text: '🌐 Lock SSH/Ovpn', callback_data: 'lock_ssh' }, { text: '🔗 Lock UDP HTTP', callback_data: 'lock_udp_http' }],
+      [{ text: '🚀 Lock Vmess', callback_data: 'lock_vmess' }, { text: '⚡ Lock Vless', callback_data: 'lock_vless' }],
+      [{ text: '🛡️ Lock Trojan', callback_data: 'lock_trojan' }, { text: '🔙 Kembali', callback_data: 'send_main_menu' }]
     ];
   } else if (action === 'unlock') {
     keyboard = [
-      [
-        { text: 'Unlock Ssh/Ovpn', callback_data: 'unlock_ssh' },
-        { text: 'Unlock UDP HTTP', callback_data: 'unlock_udp_http' }
-      ],
-      [{ text: 'Unlock Vmess', callback_data: 'unlock_vmess' }, { text: 'Unlock Vless', callback_data: 'unlock_vless' }],
-      [{ text: 'Unlock Trojan', callback_data: 'unlock_trojan' }, { text: 'Kembali', callback_data: 'send_main_menu' }]
+      [{ text: '🌐 Unlock SSH/Ovpn', callback_data: 'unlock_ssh' }, { text: '🔗 Unlock UDP HTTP', callback_data: 'unlock_udp_http' }],
+      [{ text: '🚀 Unlock Vmess', callback_data: 'unlock_vmess' }, { text: '⚡ Unlock Vless', callback_data: 'unlock_vless' }],
+      [{ text: '🛡️ Unlock Trojan', callback_data: 'unlock_trojan' }, { text: '🔙 Kembali', callback_data: 'send_main_menu' }]
     ];
   }
   try {
@@ -3067,6 +3042,14 @@ async function sendAdminSaldoMenu(ctx) {
   const manualLabel = manualEnabled ? '✅ TopUp Manual: Aktif' : '🚫 TopUp Manual: Nonaktif';
   const autoEnabled = loadTopupAutoSetting();
   const autoLabel = autoEnabled ? '✅ TopUp Otomatis: Aktif' : '🚫 TopUp Otomatis: Nonaktif';
+
+  // Load nominal topup awal
+  let topupAwal = 25000;
+  try {
+    const rawTA = fs.readFileSync(path.join(__dirname, 'topup_awal.json'), 'utf8');
+    topupAwal = Number(JSON.parse(rawTA).nominal) || 25000;
+  } catch(e) {}
+
   const keyboard = [
     [
       { text: '💵 Tambah Saldo', callback_data: 'tambah_saldo' },
@@ -3077,6 +3060,7 @@ async function sendAdminSaldoMenu(ctx) {
       { text: '🖼️ Upload QRIS', callback_data: 'upload_qris' }
     ],
     [{ text: '🎁 Bonus Topup', callback_data: 'bonus_topup_menu' }],
+    [{ text: `💰 Top Up Awal Reseller: ${formatRupiah(topupAwal)}`, callback_data: 'edit_topup_awal' }],
     [{ text: 'Pendapatan Hari Ini & Kemarin', callback_data: 'admin_income_summary' }],
     [{ text: autoLabel, callback_data: 'toggle_topup_auto' }],
     [{ text: manualLabel, callback_data: 'toggle_topup_manual' }],
@@ -3088,6 +3072,29 @@ async function sendAdminSaldoMenu(ctx) {
     reply_markup: { inline_keyboard: keyboard }
   });
 }
+
+// Handler edit topup awal
+bot.action('edit_topup_awal', async (ctx) => {
+  await ctx.answerCbQuery();
+  const adminId = ctx.from.id;
+  if (!adminIds.includes(adminId)) {
+    return ctx.reply('🚫 Anda tidak memiliki izin.');
+  }
+  let topupAwal = 25000;
+  try {
+    const rawTA = fs.readFileSync(path.join(__dirname, 'topup_awal.json'), 'utf8');
+    topupAwal = Number(JSON.parse(rawTA).nominal) || 25000;
+  } catch(e) {}
+
+  userState[ctx.chat.id] = { step: 'edit_topup_awal_input' };
+  await ctx.reply(
+    `*💰 EDIT NOMINAL TOP UP AWAL RESELLER*\n\n` +
+    `Nominal saat ini: *${formatRupiah(topupAwal)}*\n\n` +
+    `Nominal ini ditampilkan di halaman "Daftar Reseller" sebagai syarat bergabung.\n\n` +
+    `Kirim nominal baru (contoh: \`25000\`):`,
+    { parse_mode: 'Markdown' }
+  );
+});
 
 async function sendAdminResellerMenu(ctx) {
   const keyboard = [
@@ -5314,7 +5321,7 @@ bot.action('jadi_reseller', async (ctx) => {
     '- Dukungan langsung dari admin\n' +
     '- Akses promo dan bonus reseller\n\n' +
     '*Syarat Bergabung:*\n' +
-    '> Top up awal: *Rp 18.000* (langsung masuk saldo)\n' +
+    '> Top up awal: *' + (() => { try { return formatRupiah(Number(JSON.parse(fs.readFileSync(path.join(__dirname, 'topup_awal.json'), 'utf8')).nominal) || 25000); } catch(e) { return 'Rp 25.000'; } })() + '* (langsung masuk saldo)\n' +
     '> Minimal top up bulanan: *' + formatRupiah(terms.min_topup) + '*\n\n' +
     '*Data Anda:*\n' +
     '- ID: ' + userId + '\n' +
@@ -5754,9 +5761,14 @@ db.all(query, params, (err, servers) => {
     logger.error('⚠️ Error fetching servers:', err.message);
     return ctx.reply('⚠️ Tidak ada server yang tersedia saat ini.', { parse_mode: 'HTML' });
   }
+
+  if (!servers || servers.length === 0) {
+    return ctx.reply('⚠️ *Tidak ada server yang tersedia saat ini.*', { parse_mode: 'Markdown' });
+  }
+
     // ==== mulai logika pagination di bawah ini ====
     const serversPerPage = 6;
-    const totalPages = Math.ceil(servers.length / serversPerPage);
+    const totalPages = Math.max(1, Math.ceil(servers.length / serversPerPage));
     const currentPage = Math.min(Math.max(page, 0), totalPages - 1);
     const start = currentPage * serversPerPage;
     const end = start + serversPerPage;
@@ -5786,13 +5798,16 @@ db.all(query, params, (err, servers) => {
     if (navButtons.length > 0) keyboard.push(navButtons);
     keyboard.push([{ text: '🔙 Kembali ke Menu Utama', callback_data: 'sendMainMenu' }]);
 
-const serverList = currentServers.map(server => {
-  const hargaPerHari = getEffectiveServerPrice(server, isR);
-  const hargaPer30Hari = hargaPerHari * 30;
-  const isFull = server.total_create_akun >= server.batas_create_akun;
+const serverList = (() => {
+  // Pisahkan server reseller dan member
+  const resellerServers = currentServers.filter(s => s.is_reseller_only === 1 || s.is_reseller_only === '1');
+  const memberServers = currentServers.filter(s => !s.is_reseller_only || s.is_reseller_only === 0 || s.is_reseller_only === '0');
 
-  return (
-`╔══════════════════════╗
+  const formatServer = (server) => {
+    const hargaPerHari = getEffectiveServerPrice(server, isR);
+    const hargaPer30Hari = hargaPerHari * 30;
+    const isFull = server.total_create_akun >= server.batas_create_akun;
+    return `╔══════════════════════╗
   🟦 *${server.nama_server.toUpperCase()}*
 ╚══════════════════════╝
 🛜 *Domain:* \`${server.domain}\`
@@ -5801,10 +5816,23 @@ const serverList = currentServers.map(server => {
 📡 *Quota:* ${server.quota} GB
 🔐 *IP Limit:* ${server.iplimit} IP
 👥 *Akun Terpakai:* ${server.total_create_akun}/${server.batas_create_akun}
-📌 *Status:* ${isFull ? "❌ Server Penuh" : "✅ Tersedia"}
-`
-  );
-}).join('\n\n');
+📌 *Status:* ${isFull ? "❌ Server Penuh" : "✅ Tersedia"}`;
+  };
+
+  let result = '';
+  if (isR && resellerServers.length > 0) {
+    result += `🔐 *SERVER RESELLER*\n━━━━━━━━━━━━━━━━━━━━━━\n`;
+    result += resellerServers.map(formatServer).join('\n\n');
+    result += '\n\n';
+  }
+  if (memberServers.length > 0) {
+    if (isR && resellerServers.length > 0) {
+      result += `👥 *SERVER MEMBER*\n━━━━━━━━━━━━━━━━━━━━━━\n`;
+    }
+    result += memberServers.map(formatServer).join('\n\n');
+  }
+  return result || '─ Tidak ada server tersedia ─';
+})();
     if (ctx.updateType === 'callback_query') {
       ctx.editMessageText(`📋 *List Server (Halaman ${currentPage + 1} dari ${totalPages})*\n\n${serverList}`, {
         reply_markup: { inline_keyboard: keyboard },
@@ -5847,11 +5875,13 @@ bot.action(/(create|renew)_username_(vmess|vless|trojan|shadowsocks|ssh|zivpn|ud
       return ctx.reply('❌ *Server tidak ditemukan.*', { parse_mode: 'Markdown' });
     }
 
-    const batasCreateAkun = server.batas_create_akun;
-    const totalCreateAkun = server.total_create_akun;
-
-    if (action === "create" && totalCreateAkun >= batasCreateAkun) {
-      return ctx.reply('❌ *Server penuh. Tidak dapat membuat akun baru di server ini.*', { parse_mode: 'Markdown' });
+    // Cek server penuh HANYA untuk create, bukan renew
+    if (action === 'create') {
+      const batasCreateAkun = server.batas_create_akun;
+      const totalCreateAkun = server.total_create_akun;
+      if (totalCreateAkun >= batasCreateAkun) {
+        return ctx.reply('❌ *Server penuh. Tidak dapat membuat akun baru di server ini.*', { parse_mode: 'Markdown' });
+      }
     }
 
     await ctx.reply('👤 *Masukkan username:*', { parse_mode: 'Markdown' });
@@ -6263,6 +6293,32 @@ if (!state || !state.step) return;
     await ctx.reply('✅ Username Telegram admin tersimpan: @' + ADMIN_TELEGRAM);
     return sendAdminToolsMenu(ctx);
   }
+  if (state.step === 'edit_topup_awal_input') {
+    const text = ctx.message.text.trim();
+    if (text.toLowerCase() === 'batal') {
+      delete userState[ctx.chat.id];
+      return ctx.reply('Edit nominal top up awal dibatalkan.');
+    }
+
+    if (!/^\d+$/.test(text)) {
+      return ctx.reply('❌ Format salah. Kirim angka saja. Contoh: `25000`', { parse_mode: 'Markdown' });
+    }
+
+    const nominal = parseInt(text, 10);
+    if (nominal < 0) {
+      return ctx.reply('❌ Nilai tidak boleh negatif.');
+    }
+
+    fs.writeFileSync(path.join(__dirname, 'topup_awal.json'), JSON.stringify({ nominal }, null, 2), 'utf8');
+    delete userState[ctx.chat.id];
+    await ctx.reply(
+      `✅ Nominal top up awal reseller berhasil diubah menjadi *${formatRupiah(nominal)}*\n\n` +
+      `Nominal ini akan tampil di halaman "Daftar Reseller".`,
+      { parse_mode: 'Markdown' }
+    );
+    return sendAdminMenu(ctx);
+  }
+
   if (state.step === 'reseller_terms_input') {
     const text = ctx.message.text.trim();
     if (text.toLowerCase() === 'batal') {
@@ -7105,7 +7161,8 @@ if (isDuplicateUsername) {
   );
   return;
 }
-const isErrorMsg = msg.includes('?') || msg.includes('❌') || msgLower.includes('sudah ada') || msgLower.includes('exists') || msgLower.includes('already exists');
+// Fix: jangan pakai '?' sebagai penanda error karena bisa muncul di pesan sukses vless/trojan
+const isErrorMsg = msg.includes('❌') || msgLower.includes('sudah ada') || msgLower.includes('exists') || msgLower.includes('already exists') || msgLower.includes('error') || msgLower.includes('tidak valid') || msgLower.includes('tidak ditemukan') || msgLower.includes('respons error');
 if (isErrorMsg) {
   logger.error(`🔄 Rollback saldo user ${ctx.from.id}, type: ${type}, server: ${serverId}, respon: ${msg}`);
   return ctx.reply(msg, { parse_mode: 'Markdown' });
@@ -7115,12 +7172,12 @@ const chargeResult = await chargeAccountTransactionAtomic(ctx.from.id, totalHarg
 if (!chargeResult.ok) {
   logger.error(`Finalisasi transaksi gagal untuk user ${ctx.from.id}, type: ${type}, server: ${serverId}, err: ${chargeResult.error}`);
   if (chargeResult.error === 'SALDO_NOT_ENOUGH_OR_USER_NOT_FOUND') {
-    return ctx.reply('? Saldo tidak cukup (kemungkinan sudah terpakai transaksi lain). Silakan cek saldo Anda lalu coba lagi.', { parse_mode: 'Markdown' });
+    return ctx.reply('❌ Saldo tidak cukup (kemungkinan sudah terpakai transaksi lain). Silakan cek saldo Anda lalu coba lagi.', { parse_mode: 'Markdown' });
   }
-  return ctx.reply('? Terjadi kesalahan saat finalisasi transaksi. Silakan coba lagi.', { parse_mode: 'Markdown' });
+  return ctx.reply('❌ Terjadi kesalahan saat finalisasi transaksi. Silakan coba lagi.', { parse_mode: 'Markdown' });
 }
 
-logger.info(`? Transaksi sukses untuk user ${ctx.from.id}, type: ${type}, server: ${serverId}, ref: ${chargeResult.referenceId}`);
+logger.info(`✅ Transaksi sukses untuk user ${ctx.from.id}, type: ${type}, server: ${serverId}, ref: ${chargeResult.referenceId}`);
 
 if (action === 'create') {
   db.run('UPDATE Server SET total_create_akun = total_create_akun + 1 WHERE id = ?', [serverId], (err) => {
