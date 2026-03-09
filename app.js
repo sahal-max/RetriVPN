@@ -1984,20 +1984,20 @@ async function sendMainMenu(ctx) {
   // Buat keyboard dasar untuk semua user
   let keyboard = [
     [
-      { text: 'Buat Akun', callback_data: 'service_create' },
-      { text: 'Trial Gratis', callback_data: 'service_trial' }
+      { text: '🛒 Buat Akun', callback_data: 'service_create' },
+      { text: '🎁 Trial Gratis', callback_data: 'service_trial' }
     ],
     [
-      { text: 'Perpanjang Akun', callback_data: 'service_renew' },
-      { text: 'Akun Saya', callback_data: 'view_accounts' }
+      { text: '🔄 Perpanjang Akun', callback_data: 'service_renew' },
+      { text: '📋 Akun Saya', callback_data: 'view_accounts' }
     ],
     [
-      { text: 'Hapus Akun', callback_data: 'delete_my_account_intro' },
-      { text: 'Cek Expired', callback_data: 'check_expiry_account' }
+      { text: '🗑 Hapus Akun', callback_data: 'delete_my_account_intro' },
+      { text: '⏰ Cek Expired', callback_data: 'check_expiry_account' }
     ],
     [
       { text: 'Tools & Utilitas', callback_data: 'menu_tools' },
-      { text: 'Hubungi Admin', callback_data: 'hubungi_admin' }
+      { text: '📞 Hubungi Admin', callback_data: 'hubungi_admin' }
     ],
     [
       { text: 'Daftar Reseller - Harga Lebih Hemat!', callback_data: 'jadi_reseller' }
@@ -2008,7 +2008,7 @@ async function sendMainMenu(ctx) {
     const topupIndex = keyboard.findIndex(row =>
       row.some(btn => btn.callback_data === 'topup_saldo')
     );
-    const autoRow = [{ text: 'TopUp Saldo Otomatis', callback_data: 'topup_saldo' }];
+    const autoRow = [{ text: '💳 TopUp Saldo Otomatis', callback_data: 'topup_saldo' }];
     if (topupIndex === -1) {
       keyboard.splice(4, 0, autoRow);
     }
@@ -5761,9 +5761,14 @@ db.all(query, params, (err, servers) => {
     logger.error('⚠️ Error fetching servers:', err.message);
     return ctx.reply('⚠️ Tidak ada server yang tersedia saat ini.', { parse_mode: 'HTML' });
   }
+
+  if (!servers || servers.length === 0) {
+    return ctx.reply('⚠️ *Tidak ada server yang tersedia saat ini.*', { parse_mode: 'Markdown' });
+  }
+
     // ==== mulai logika pagination di bawah ini ====
     const serversPerPage = 6;
-    const totalPages = Math.ceil(servers.length / serversPerPage);
+    const totalPages = Math.max(1, Math.ceil(servers.length / serversPerPage));
     const currentPage = Math.min(Math.max(page, 0), totalPages - 1);
     const start = currentPage * serversPerPage;
     const end = start + serversPerPage;
@@ -5793,13 +5798,16 @@ db.all(query, params, (err, servers) => {
     if (navButtons.length > 0) keyboard.push(navButtons);
     keyboard.push([{ text: '🔙 Kembali ke Menu Utama', callback_data: 'sendMainMenu' }]);
 
-const serverList = currentServers.map(server => {
-  const hargaPerHari = getEffectiveServerPrice(server, isR);
-  const hargaPer30Hari = hargaPerHari * 30;
-  const isFull = server.total_create_akun >= server.batas_create_akun;
+const serverList = (() => {
+  // Pisahkan server reseller dan member
+  const resellerServers = currentServers.filter(s => s.is_reseller_only === 1 || s.is_reseller_only === '1');
+  const memberServers = currentServers.filter(s => !s.is_reseller_only || s.is_reseller_only === 0 || s.is_reseller_only === '0');
 
-  return (
-`╔══════════════════════╗
+  const formatServer = (server) => {
+    const hargaPerHari = getEffectiveServerPrice(server, isR);
+    const hargaPer30Hari = hargaPerHari * 30;
+    const isFull = server.total_create_akun >= server.batas_create_akun;
+    return `╔══════════════════════╗
   🟦 *${server.nama_server.toUpperCase()}*
 ╚══════════════════════╝
 🛜 *Domain:* \`${server.domain}\`
@@ -5808,10 +5816,23 @@ const serverList = currentServers.map(server => {
 📡 *Quota:* ${server.quota} GB
 🔐 *IP Limit:* ${server.iplimit} IP
 👥 *Akun Terpakai:* ${server.total_create_akun}/${server.batas_create_akun}
-📌 *Status:* ${isFull ? "❌ Server Penuh" : "✅ Tersedia"}
-`
-  );
-}).join('\n\n');
+📌 *Status:* ${isFull ? "❌ Server Penuh" : "✅ Tersedia"}`;
+  };
+
+  let result = '';
+  if (isR && resellerServers.length > 0) {
+    result += `🔐 *SERVER RESELLER*\n━━━━━━━━━━━━━━━━━━━━━━\n`;
+    result += resellerServers.map(formatServer).join('\n\n');
+    result += '\n\n';
+  }
+  if (memberServers.length > 0) {
+    if (isR && resellerServers.length > 0) {
+      result += `👥 *SERVER MEMBER*\n━━━━━━━━━━━━━━━━━━━━━━\n`;
+    }
+    result += memberServers.map(formatServer).join('\n\n');
+  }
+  return result || '─ Tidak ada server tersedia ─';
+})();
     if (ctx.updateType === 'callback_query') {
       ctx.editMessageText(`📋 *List Server (Halaman ${currentPage + 1} dari ${totalPages})*\n\n${serverList}`, {
         reply_markup: { inline_keyboard: keyboard },
@@ -5854,11 +5875,13 @@ bot.action(/(create|renew)_username_(vmess|vless|trojan|shadowsocks|ssh|zivpn|ud
       return ctx.reply('❌ *Server tidak ditemukan.*', { parse_mode: 'Markdown' });
     }
 
-    const batasCreateAkun = server.batas_create_akun;
-    const totalCreateAkun = server.total_create_akun;
-
-    if (totalCreateAkun >= batasCreateAkun) {
-      return ctx.reply('❌ *Server penuh. Tidak dapat membuat akun baru di server ini.*', { parse_mode: 'Markdown' });
+    // Cek server penuh HANYA untuk create, bukan renew
+    if (action === 'create') {
+      const batasCreateAkun = server.batas_create_akun;
+      const totalCreateAkun = server.total_create_akun;
+      if (totalCreateAkun >= batasCreateAkun) {
+        return ctx.reply('❌ *Server penuh. Tidak dapat membuat akun baru di server ini.*', { parse_mode: 'Markdown' });
+      }
     }
 
     await ctx.reply('👤 *Masukkan username:*', { parse_mode: 'Markdown' });
