@@ -71,7 +71,7 @@ async function createssh(username, password, exp, iplimit, serverId) {
 
 *[ PORTS ]*
 ------------------------------
-*TLS*          : \`${s.port.tls}\`
+*TLS*          : \`${s?.port?.tls ?? '-'}\`
 *Non-TLS*      : \`${s.port.none}\`
 *OVPN TCP*     : \`${s.port.ovpntcp}\`
 *OVPN UDP*     : \`${s.port.ovpnudp}\`
@@ -219,7 +219,7 @@ async function createvmess(username, exp, quota, limitip, serverId) {
         const remarks = s.remark || s.remarks || s.username || username;
         const city = s.city || s.kota || s.location || '-';
         const isp = s.isp || s.org || s.organization || '-';
-        const pathWs = (s.path && (s.path.ws || s.path.stn)) || s.path || '/vmess';
+        const pathWs = (s.path && (s.path.ws || s?.path?.stn ?? '-')) || s.path || '/vmess';
         const serviceName = s.serviceName || 'vmess';
         const pathUpgrade = s.path && (s.path.upgrade || s.path.up || s.path.upws) ? (s.path.upgrade || s.path.up || s.path.upws) : '/upvmess';
         const portTls = s.port?.tls || '-';
@@ -322,77 +322,63 @@ async function createvless(username, exp, quota, limitip, serverId) {
 
         const s = d.data;
 
-        const vHostname  = s.hostname || '-';
-        const vPortTls   = s.port?.tls || '-';
-        const vPortNone  = s.port?.none || '-';
-        const vPortAny   = s.port?.any || '-';
-        const vUuid      = s.uuid || '-';
-        const vPath      = s.path?.stn || s.path || '-';
-        const vExpired   = s.expired || '-';
-        const vTime      = s.time || '-';
-        const vLinkTls   = s.link?.tls || '-';
-        const vLinkNone  = s.link?.none || '-';
-        const vLinkGrpc  = s.link?.grpc || '-';
-        const vLinkUpTls = s.link?.uptls || '-';
-        const vLinkUpNtls= s.link?.upntls || '-';
-
         const msg = `
-╔══════════════════════╗
+=============================
         *VLESS ACCOUNT*
-╚══════════════════════╝
+=============================
 
 *[ VLESS DETAILS ]*
-────────────────────────
-*HOST*        : \`${vHostname}\`
-*PORT TLS*    : \`${vPortTls}\`
-*PORT NTLS*   : \`${vPortNone}\`
-*UUID*        : \`${vUuid}\`
+-----------------------------
+*HOST*        : \`${s.hostname}\`
+*PORT TLS*    : \`${s?.port?.tls ?? '-'}\`
+*PORT NTLS*   : \`${s.port.none}\`
+*UUID*        : \`${s.uuid}\`
 *NETWORK*     : \`ws, grpc, upgrade\`
-*PATH*        : \`${vPath}\`
-*EXPIRED*     : \`${vExpired}\` - \`${vTime}\`
+*PATH*        : \`${s?.path?.stn ?? '-'}\`
+*EXPIRED*     : \`${s.expired}\` - \`${s.time}\`
 *QUOTA*       : \`${KUOTA === "0" ? "Unlimited" : KUOTA} GB\`
 *IP LIMIT*    : \`${LIMIT_IP === "0" ? "Unlimited" : LIMIT_IP} pengguna\`
 
 *[ VLESS URL ]*
-────────────────────────
+-----------------------------
 TLS:
-\`${vLinkTls}\`
+\`${s?.link?.tls ?? '-'}\`
 
 Non-TLS:
-\`${vLinkNone}\`
+\`${s.link.none}\`
 
 gRPC:
-\`${vLinkGrpc}\`
+\`${s.link.grpc}\`
 
 Up TLS:
-\`${vLinkUpTls}\`
+\`${s.link.uptls}\`
 
 Up Non-TLS:
-\`${vLinkUpNtls}\`
+\`${s.link.upntls}\`
 
 *[ HOST INFORMATION ]*
-────────────────────────
-*Domain*      : \`${vHostname}\`
-*SNI*         : \`${vHostname}\`
+-----------------------------
+*Domain*      : \`${s.hostname}\`
+*SNI*         : \`${s.hostname}\`
 
 *[ PORTS ]*
-────────────────────────
-*WS TLS*      : \`${vPortTls}\`
-*WS NTLS*     : \`${vPortNone}\`
-*ANY PORT*    : \`${vPortAny}\`
+-----------------------------
+*WS TLS*      : \`${s?.port?.tls ?? '-'}\`
+*WS NTLS*     : \`${s.port.none}\`
+*ANY PORT*    : \`${s.port.any}\`
 
 *[ SUGGESTED SNI / BUG ]*
-────────────────────────
-\`${vHostname}\`
+-----------------------------
+\`${s.hostname}\`
 \`www.google.com\`
 \`www.bing.com\`
 
 *[ DOWNLOAD CONFIG ]*
-────────────────────────
-http://${vHostname}:81/vless-config.zip
+-----------------------------
+http://${s.hostname}:81/vless-config.zip
 
-────────────────────────
-*© Telegram Bots - 2025*
+-----------------------------
+*© Telegram Bots 1forcr - 2025*
 *Terima kasih telah menggunakan layanan kami.*
 `;
 
@@ -448,71 +434,58 @@ async function createtrojan(username, exp, quota, limitip, serverId) {
 
         const s = d.data;
 
-        const tHostname  = s.hostname || '-';
-        const tPortTls   = s.port?.tls || '-';
-        const tPortNone  = s.port?.none || '-';
-        const tPortAny   = s.port?.any || '-';
-        const tPortGrpc  = s.port?.grpc || '-';
-        const tUuid      = s.uuid || '-';
-        const tPath      = s.path?.stn || s.path || '-';
-        const tExpired   = s.expired || '-';
-        const tTime      = s.time || '-';
-        const tLinkTls   = s.link?.tls || '-';
-        const tLinkGrpc  = s.link?.grpc || '-';
-        const tLinkUpTls = s.link?.uptls || '-';
-
         const msg = `
-╔══════════════════════╗
-       *TROJAN ACCOUNT*
-╚══════════════════════╝
+=============================
+        *TROJAN ACCOUNT*
+=============================
 
 *[ TROJAN DETAILS ]*
-────────────────────────
-*HOST*        : \`${tHostname}\`
-*PORT TLS*    : \`${tPortTls}\`
-*PORT NTLS*   : \`${tPortNone}\`
-*KEY*         : \`${tUuid}\`
+-----------------------------
+*HOST*        : \`${s.hostname}\`
+*PORT TLS*    : \`${s?.port?.tls ?? '-'}\`
+*PORT NTLS*   : \`${s.port.none}\`
+*KEY*         : \`${s.uuid}\`
 *NETWORK*     : \`ws, grpc, upgrade\`
-*PATH*        : \`${tPath}\`
-*EXPIRED*     : \`${tExpired}\` - \`${tTime}\`
+*PATH*        : \`${s?.path?.stn ?? '-'}\`
+*EXPIRED*     : \`${s.expired}\` - \`${s.time}\`
 *QUOTA*       : \`${KUOTA === "0" ? "Unlimited" : KUOTA} GB\`
 *IP LIMIT*    : \`${LIMIT_IP === "0" ? "Unlimited" : LIMIT_IP} pengguna\`
 
 *[ TROJAN LINK ]*
-────────────────────────
+-----------------------------
 TLS:
-\`${tLinkTls}\`
+\`${s?.link?.tls ?? '-'}\`
 
 gRPC:
-\`${tLinkGrpc}\`
+\`${s.link.grpc}\`
 
 Up TLS:
-\`${tLinkUpTls}\`
+\`${s.link.uptls}\`
 
 *[ HOST INFORMATION ]*
-────────────────────────
-*Domain*      : \`${tHostname}\`
-*SNI*         : \`${tHostname}\`
+-----------------------------
+*Domain*      : \`${s.hostname}\`
+*SNI*         : \`${s.hostname}\`
 
 *[ PORTS ]*
-────────────────────────
-*WS TLS*      : \`${tPortTls}\`
-*WS NTLS*     : \`${tPortNone}\`
-*ANY PORT*    : \`${tPortAny}\`
-*GRPC TLS*   : \`${tPortGrpc}\`
+-----------------------------
+*WS TLS*      : \`${s?.port?.tls ?? '-'}\`
+*WS NTLS*     : \`${s.port.none}\`
+*ANY PORT*    : \`${s.port.any}\`
+*GRPC TLS*    : \`${s.port.grpc}\`
 
 *[ SUGGESTED SNI / BUG ]*
-────────────────────────
-\`${tHostname}\`
+-----------------------------
+\`${s.hostname}\`
 \`www.google.com\`
 \`www.bing.com\`
 
 *[ DOWNLOAD CONFIG ]*
-────────────────────────
-http://${tHostname}:81/trojan-config.zip
+-----------------------------
+http://${s.hostname}:81/trojan-config.zip
 
-────────────────────────
-*© Telegram Bots - 2025*
+-----------------------------
+*© Telegram Bots 1forcr - 2025*
 *Terima kasih telah menggunakan layanan kami.*
 `;
 
