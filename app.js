@@ -1989,23 +1989,23 @@ async function sendMainMenu(ctx) {
   // Buat keyboard dasar untuk semua user
   let keyboard = [
     [
-      { text: '🛒 Buat Akun', callback_data: 'service_create' },
-      { text: '🎁 Trial Gratis', callback_data: 'service_trial' }
+      { text: 'Buat Akun', callback_data: 'service_create' },
+      { text: 'Trial Gratis', callback_data: 'service_trial' }
     ],
     [
-      { text: '🔄 Perpanjang Akun', callback_data: 'service_renew' },
-      { text: '📋 Akun Saya', callback_data: 'view_accounts' }
+      { text: 'Perpanjang Akun', callback_data: 'service_renew' },
+      { text: 'Akun Saya', callback_data: 'view_accounts' }
     ],
     [
-      { text: '🗑️ Hapus Akun', callback_data: 'delete_my_account_intro' },
-      { text: '⏰ Cek Expired', callback_data: 'check_expiry_account' }
+      { text: 'Hapus Akun', callback_data: 'delete_my_account_intro' },
+      { text: 'Cek Expired', callback_data: 'check_expiry_account' }
     ],
     [
-      { text: '🧰 Tools & Utilitas', callback_data: 'menu_tools' },
-      { text: '📞 Hubungi Admin', callback_data: 'hubungi_admin' }
+      { text: 'Tools & Utilitas', callback_data: 'menu_tools' },
+      { text: 'Hubungi Admin', callback_data: 'hubungi_admin' }
     ],
     [
-      { text: '🤝 Daftar Reseller - Harga Lebih Hemat!', callback_data: 'jadi_reseller' }
+      { text: 'Daftar Reseller - Harga Lebih Hemat!', callback_data: 'jadi_reseller' }
     ],
   ];
 
@@ -2013,7 +2013,7 @@ async function sendMainMenu(ctx) {
     const topupIndex = keyboard.findIndex(row =>
       row.some(btn => btn.callback_data === 'topup_saldo')
     );
-    const autoRow = [{ text: '💰 TopUp Saldo Otomatis', callback_data: 'topup_saldo' }];
+    const autoRow = [{ text: 'TopUp Saldo Otomatis', callback_data: 'topup_saldo' }];
     if (topupIndex === -1) {
       keyboard.splice(4, 0, autoRow);
     }
@@ -2023,7 +2023,7 @@ async function sendMainMenu(ctx) {
     const topupIndex = keyboard.findIndex(row =>
       row.some(btn => btn.callback_data === 'topup_saldo')
     );
-    const manualRow = [{ text: '💰 TopUp Saldo Manual via (QRIS)', callback_data: 'topup_manual' }];
+    const manualRow = [{ text: 'TopUp Saldo Manual via (QRIS)', callback_data: 'topup_manual' }];
     if (topupIndex === -1) {
       keyboard.push(manualRow);
     } else {
@@ -2034,11 +2034,11 @@ async function sendMainMenu(ctx) {
   if (isReseller) {
     // Letakkan menu reseller tepat di bawah baris Tools + Hubungi Admin
     keyboard.splice(3, 0, [
-      { text: '🔓 Buka Kunci Akun', callback_data: 'service_unlock' },
-      { text: '🔒 Kunci Akun', callback_data: 'service_lock' }
+      { text: 'Buka Kunci Akun', callback_data: 'service_unlock' },
+      { text: 'Kunci Akun', callback_data: 'service_lock' }
     ]);
     keyboard.splice(4, 0, [
-      { text: '📊 Statistik Reseller Saya', callback_data: 'reseller_stats' }
+      { text: 'Statistik Reseller Saya', callback_data: 'reseller_stats' }
     ]);
 
     logger.info('🛡️ Menu reseller ditampilkan untuk user: ' + userId);
