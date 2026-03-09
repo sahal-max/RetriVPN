@@ -3042,6 +3042,14 @@ async function sendAdminSaldoMenu(ctx) {
   const manualLabel = manualEnabled ? '✅ TopUp Manual: Aktif' : '🚫 TopUp Manual: Nonaktif';
   const autoEnabled = loadTopupAutoSetting();
   const autoLabel = autoEnabled ? '✅ TopUp Otomatis: Aktif' : '🚫 TopUp Otomatis: Nonaktif';
+
+  // Load nominal topup awal
+  let topupAwal = 25000;
+  try {
+    const rawTA = fs.readFileSync(path.join(__dirname, 'topup_awal.json'), 'utf8');
+    topupAwal = Number(JSON.parse(rawTA).nominal) || 25000;
+  } catch(e) {}
+
   const keyboard = [
     [
       { text: '💵 Tambah Saldo', callback_data: 'tambah_saldo' },
@@ -3052,6 +3060,7 @@ async function sendAdminSaldoMenu(ctx) {
       { text: '🖼️ Upload QRIS', callback_data: 'upload_qris' }
     ],
     [{ text: '🎁 Bonus Topup', callback_data: 'bonus_topup_menu' }],
+    [{ text: `💰 Top Up Awal Reseller: ${formatRupiah(topupAwal)}`, callback_data: 'edit_topup_awal' }],
     [{ text: 'Pendapatan Hari Ini & Kemarin', callback_data: 'admin_income_summary' }],
     [{ text: autoLabel, callback_data: 'toggle_topup_auto' }],
     [{ text: manualLabel, callback_data: 'toggle_topup_manual' }],
@@ -3063,6 +3072,29 @@ async function sendAdminSaldoMenu(ctx) {
     reply_markup: { inline_keyboard: keyboard }
   });
 }
+
+// Handler edit topup awal
+bot.action('edit_topup_awal', async (ctx) => {
+  await ctx.answerCbQuery();
+  const adminId = ctx.from.id;
+  if (!adminIds.includes(adminId)) {
+    return ctx.reply('🚫 Anda tidak memiliki izin.');
+  }
+  let topupAwal = 25000;
+  try {
+    const rawTA = fs.readFileSync(path.join(__dirname, 'topup_awal.json'), 'utf8');
+    topupAwal = Number(JSON.parse(rawTA).nominal) || 25000;
+  } catch(e) {}
+
+  userState[ctx.chat.id] = { step: 'edit_topup_awal_input' };
+  await ctx.reply(
+    `*💰 EDIT NOMINAL TOP UP AWAL RESELLER*\n\n` +
+    `Nominal saat ini: *${formatRupiah(topupAwal)}*\n\n` +
+    `Nominal ini ditampilkan di halaman "Daftar Reseller" sebagai syarat bergabung.\n\n` +
+    `Kirim nominal baru (contoh: \`25000\`):`,
+    { parse_mode: 'Markdown' }
+  );
+});
 
 async function sendAdminResellerMenu(ctx) {
   const keyboard = [
@@ -5289,7 +5321,7 @@ bot.action('jadi_reseller', async (ctx) => {
     '- Dukungan langsung dari admin\n' +
     '- Akses promo dan bonus reseller\n\n' +
     '*Syarat Bergabung:*\n' +
-    '> Top up awal: *Rp 18.000* (langsung masuk saldo)\n' +
+    '> Top up awal: *' + (() => { try { return formatRupiah(Number(JSON.parse(fs.readFileSync(path.join(__dirname, 'topup_awal.json'), 'utf8')).nominal) || 25000); } catch(e) { return 'Rp 25.000'; } })() + '* (langsung masuk saldo)\n' +
     '> Minimal top up bulanan: *' + formatRupiah(terms.min_topup) + '*\n\n' +
     '*Data Anda:*\n' +
     '- ID: ' + userId + '\n' +
@@ -6238,6 +6270,32 @@ if (!state || !state.step) return;
     await ctx.reply('✅ Username Telegram admin tersimpan: @' + ADMIN_TELEGRAM);
     return sendAdminToolsMenu(ctx);
   }
+  if (state.step === 'edit_topup_awal_input') {
+    const text = ctx.message.text.trim();
+    if (text.toLowerCase() === 'batal') {
+      delete userState[ctx.chat.id];
+      return ctx.reply('Edit nominal top up awal dibatalkan.');
+    }
+
+    if (!/^\d+$/.test(text)) {
+      return ctx.reply('❌ Format salah. Kirim angka saja. Contoh: `25000`', { parse_mode: 'Markdown' });
+    }
+
+    const nominal = parseInt(text, 10);
+    if (nominal < 0) {
+      return ctx.reply('❌ Nilai tidak boleh negatif.');
+    }
+
+    fs.writeFileSync(path.join(__dirname, 'topup_awal.json'), JSON.stringify({ nominal }, null, 2), 'utf8');
+    delete userState[ctx.chat.id];
+    await ctx.reply(
+      `✅ Nominal top up awal reseller berhasil diubah menjadi *${formatRupiah(nominal)}*\n\n` +
+      `Nominal ini akan tampil di halaman "Daftar Reseller".`,
+      { parse_mode: 'Markdown' }
+    );
+    return sendAdminMenu(ctx);
+  }
+
   if (state.step === 'reseller_terms_input') {
     const text = ctx.message.text.trim();
     if (text.toLowerCase() === 'batal') {
