@@ -1948,42 +1948,37 @@ async function sendMainMenu(ctx) {
   const latency = (Math.random() * 0.1 + 0.01).toFixed(2);
 
   const messageText = `
-<code>╔═══════════════════════╗</code>
-<b>  🤖 BOT VPN ${NAMA_STORE}</b>
-<code>╚═══════════════════════╝</code>
+<b>🤖 BOT VPN ${NAMA_STORE}</b>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
 
-<code>╔═══════════════════════╗</code>
-<b>  👤 PROFIL PENGGUNA</b>
-<code>╠═══════════════════════╣</code>
-<b>  👤 Nama  :</b> ${userName}
-<b>  🆔 ID    :</b> <code>${userId}</code>
-<b>  💰 Saldo :</b> <code>Rp ${saldo.toLocaleString('id-ID')}</code>
-<b>  🏷️ Status :</b> ${statusReseller}
-<code>╚═══════════════════════╝</code>
+<b>👤 PROFIL PENGGUNA</b>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
+<b>Nama   :</b> <code>${escapeHtmlLocal(userName)}</code>
+<b>ID     :</b> <code>${userId}</code>
+<b>Saldo  :</b> <code>Rp ${saldo.toLocaleString('id-ID')}</code>
+<b>Status :</b> <code>${statusReseller}</code>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
 
-<code>╔═══════════════════════╗</code>
-<b>  📊 STATISTIK AKUN ANDA</b>
-<code>╠═══════════════════════╣</code>
-<b>  📅 Hari Ini   :</b> ${userToday} akun
-<b>  📆 Minggu Ini :</b> ${userWeek} akun  
-<b>  🗓️ Bulan Ini  :</b> ${userMonth} akun
-<code>╚═══════════════════════╝</code>
+<b>📊 STATISTIK AKUN ANDA</b>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
+<b>Hari Ini   :</b> <code>${userToday} akun</code>
+<b>Minggu Ini :</b> <code>${userWeek} akun</code>
+<b>Bulan Ini  :</b> <code>${userMonth} akun</code>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
 
-<code>╔═══════════════════════╗</code>
-<b>  🌍 STATISTIK GLOBAL</b>
-<code>╠═══════════════════════╣</code>
-<b>  📅 Hari Ini   :</b> ${globalToday} akun
-<b>  📆 Minggu Ini :</b> ${globalWeek} akun
-<b>  🗓️ Bulan Ini  :</b> ${globalMonth} akun
-<code>╚═══════════════════════╝</code>
+<b>🌍 STATISTIK GLOBAL</b>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
+<b>Hari Ini   :</b> <code>${globalToday} akun</code>
+<b>Minggu Ini :</b> <code>${globalWeek} akun</code>
+<b>Bulan Ini  :</b> <code>${globalMonth} akun</code>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
 
-<code>╔═══════════════════════╗</code>
-<b>  ⚙️ STATUS SISTEM</b>
-<code>╠═══════════════════════╣</code>
-<b>  👥 Users   :</b> ${jumlahPengguna}
-<b>  ⏱️ Latency :</b> ${latency} ms
-<b>  🛠️ Versi  :</b> v2.0 Fixed
-<code>╚═══════════════════════╝</code>
+<b>⚙️ STATUS SISTEM</b>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
+<b>Users   :</b> <code>${jumlahPengguna}</code>
+<b>Latency :</b> <code>${latency} ms</code>
+<b>Versi   :</b> <code>v2.0 Fixed</code>
+<code>━━━━━━━━━━━━━━━━━━━━━━</code>
 `;
 
   // Buat keyboard dasar untuk semua user
